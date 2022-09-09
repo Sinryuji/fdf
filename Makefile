@@ -6,7 +6,7 @@
 #    By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/09 18:13:26 by hyeongki          #+#    #+#              #
-#    Updated: 2022/09/09 20:19:38 by hyeongki         ###   ########.fr        #
+#    Updated: 2022/09/09 21:02:40 by hyeongki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ LIBFT_PATH = ./lib/libft/
 LIBFT = libft.a
 
 %.o : %.c
-	$(CC) $(CFALGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 all : $(NAME)
 

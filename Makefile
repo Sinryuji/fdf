@@ -6,7 +6,7 @@
 #    By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/09 18:13:26 by hyeongki          #+#    #+#              #
-#    Updated: 2022/09/09 21:02:40 by hyeongki         ###   ########.fr        #
+#    Updated: 2022/09/11 20:01:32 by hyeongki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,10 @@ RM = rm -rf
 AR = ar rcs
 NAME = fdf
 LIBFT_PATH = ./lib/libft/
-LIBFT = libft.a
+LIBFT = ft
+MLX_PATH = ./lib/minilibx_opengl_20191021/
+MLX = mlx
+FRAMEWORK = -framework OpenGL -framework Appkit
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -33,7 +36,7 @@ all : $(NAME)
 
 $(NAME) :  $(OBJS)
 	make -C $(LIBFT_PATH)
-	$(CC) $(CFLAGS) $^ $(LIBFT_PATH)$(LIBFT) -o $@
+	$(CC) $(CFLAGS) $^ -L$(MLX_PATH) -l$(MLX) -L$(LIBFT_PATH) -l$(LIBFT) $(FRAMEWORK) -o $@
 
 clean :
 	$(RM) $(OBJS) $(BONUS_OBJS) 

@@ -6,14 +6,14 @@
 #    By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/09 18:13:26 by hyeongki          #+#    #+#              #
-#    Updated: 2022/09/11 20:01:32 by hyeongki         ###   ########.fr        #
+#    Updated: 2022/09/14 15:40:30 by hyeongki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 SRCS_PATH = ./source/mandatory/
-SRCS_NAME = fdf.c
+SRCS_NAME = main.c
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 OBJS = $(SRCS:.c=.o)
 BONUS_PATH = ./source/bonus/

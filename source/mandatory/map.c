@@ -1,41 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/14 17:38:22 by hyeongki         ###   ########.fr       */
+/*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
+/*   Updated: 2022/09/14 17:38:30 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#include "../../include/fdf.h"
+#include <stdlib.h>
 
-typedef struct s_data
+t_map	*init_map(void)
 {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}	t_data;
+	t_map	*map;
 
-typedef struct s_mlx
+	map = (t_map *)malloc(sizeof(t_map));
+	map->width = 0;
+	map->height = 0;
+	return (map);
+}
+
+void	read_map(t_map *map, int fd)
 {
-	void	*mlx;
-	void	*win;	
-}	t_mlx;
-
-typedef struct s_map
-{
-	int	width;
-	int	height;	
-}	t_map;
-
-/* map.c */
-t_map	*init_map(void);
-void	read_map(t_map *map, int fd);
-
-#endif
+	
+}

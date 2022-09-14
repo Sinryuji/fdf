@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/14 16:55:04 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/14 17:38:16 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,16 @@ void	print_image(void)
 
 int	main(int argc, char **argv)
 {
-	int	fd;
+	int		fd;
+	t_map	*map;
 
 	if (argc != 2)
 		ft_puterr("Invalid number of factors.\nUsage: ./fdf [fdf file]\n");
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		ft_puterr("Map reading error\n");
+	map = init_map();
+	read_map(map, fd);
+	
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/09 18:13:26 by hyeongki          #+#    #+#              #
-#    Updated: 2022/09/14 15:40:30 by hyeongki         ###   ########.fr        #
+#    Updated: 2022/09/14 16:51:46 by hyeongki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,22 +29,31 @@ MLX_PATH = ./lib/minilibx_opengl_20191021/
 MLX = mlx
 FRAMEWORK = -framework OpenGL -framework Appkit
 
+# Colors
+GREEN = \x1b[32m
+RED = \x1b[31m
+RESET = \x1b[0m
+
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(GREEN).$(RESET)\c"
 
 all : $(NAME)
 
 $(NAME) :  $(OBJS)
-	make -C $(LIBFT_PATH)
-	$(CC) $(CFLAGS) $^ -L$(MLX_PATH) -l$(MLX) -L$(LIBFT_PATH) -l$(LIBFT) $(FRAMEWORK) -o $@
+	@make -C $(LIBFT_PATH)
+	@$(CC) $(CFLAGS) $^ -L$(MLX_PATH) -l$(MLX) -L$(LIBFT_PATH) -l$(LIBFT) $(FRAMEWORK) -o $@
+	@echo "$@: $(GREEN)$@ was created$(RESET)"
 
 clean :
-	$(RM) $(OBJS) $(BONUS_OBJS) 
-	make -C $(LIBFT_PATH) clean
+	@$(RM) $(OBJS) $(BONUS_OBJS) 
+	@make -C $(LIBFT_PATH) clean
+	@echo "$(NAME): $(RED)object files were deleted$(RESET)"
 
 fclean : clean
-	$(RM) $(NAME)
-	make -C $(LIBFT_PATH) fclean
+	@$(RM) $(NAME)
+	@make -C $(LIBFT_PATH) fclean
+	@echo "$(NAME): $(RED)$(NAME) was deleted$(RESET)"
 
 re : fclean all
 

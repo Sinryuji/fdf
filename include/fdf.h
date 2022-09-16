@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/14 17:38:22 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/14 19:19:31 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,20 @@ typedef struct s_mlx
 	void	*win;	
 }	t_mlx;
 
+typedef struct s_dot
+{
+	int				value;
+	int				color;
+}	t_dot;
+
 typedef struct s_map
 {
-	int	width;
-	int	height;	
+	int				width;
+	int				height;
+	struct s_dot	*map;
 }	t_map;
 
 /* map.c */
-t_map	*init_map(void);
-void	read_map(t_map *map, int fd);
+t_map	*read_map(char *map_str);
 
 #endif

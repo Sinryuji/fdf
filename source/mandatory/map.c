@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 18:19:32 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/16 18:50:41 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,13 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void	map_free(t_map *map)
-{
-	(void)map;
+void	map_free(t_map *map, int err_code)
+{	
+	if (map->map)
+		free(map->map);
+	free(map);
+	if (err_code < 0)
+		put_error(err_code);
 }
 
 int	get_map_size(t_map *map, int fd)
@@ -50,7 +54,7 @@ int	get_map_size(t_map *map, int fd)
 	return (0);
 }
 
-t_map	*init_map(char *map_str)
+static t_map	*init_map(char *map_str)
 {
 	int		fd;
 	t_map	*map;
@@ -66,23 +70,18 @@ t_map	*init_map(char *map_str)
 	ret = get_map_size(map, fd);
 	close(fd);
 	if (ret < 0 || map->width < 1 || map->height < 1)
-	{
-		free(map);
-		put_error(ret);
-	}
+		map_free(map, ret);
 	map->map = (t_dot *)malloc(sizeof(t_dot) * map->height * map->width);
 	if (!map->map)
-	{
-		free(map);
-		put_error(ERR_OPEN);
-	}
+		map_free(map, ret);
 	return (map);
 }
 
-void	get_map_data(t_map *map, char **split, int *cnt)
+static void	get_map_data(t_map *map, char **split)
 {
-	int		i;
-	char	**data_str;
+	int			i;
+	char		**data_str;
+	static int	cnt = 0;
 
 	i = 0;
 	while (i < map->width)
@@ -90,20 +89,20 @@ void	get_map_data(t_map *map, char **split, int *cnt)
 		data_str = ft_split(split[i], ',');
 		if (!data_str)
 		{
-			free(map);
+			map_free(map, 0);
 			ft_split_free(split);
 			put_error(ERR_SPLIT);
 		}
-		map->map[*cnt].value = ft_atoi(data_str[0]);
+		map->map[cnt].value = ft_atoi(data_str[0]);
 		if (data_str[1])
-			map->map[*cnt].color = ft_atoi_hex(data_str[1]);
+			map->map[cnt].color = ft_atoi_hex(data_str[1]);
 		i++;
-		(*cnt)++;
+		cnt++;
 		ft_split_free(data_str);
 	}
 }
 
-void	print_map(t_map *map)
+static void	print_map(t_map *map)
 {
 	int	i;
 
@@ -123,24 +122,24 @@ t_map	*read_map(char *map_str)
 	char	**split;
 	t_map	*map;
 	int		fd;
-	int		*cnt;
 
 	map = init_map(map_str);
 	fd = open(map_str, O_RDONLY);
 	if (fd < 0)
-		put_error(ERR_OPEN);
-	cnt = (int *)ft_calloc(sizeof(int *), 1);
-	while (1)
 	{
-		read = get_next_line(fd);
-		if (!read)
-			break ;
+		map_free(map, 0);
+		put_error(ERR_OPEN);
+	}
+	read = get_next_line(fd);
+	while (read)
+	{
 		split = ft_split(read, ' ');
 		if (!split)
 			put_error(ERR_SPLIT);
-		get_map_data(map, split, cnt);
+		get_map_data(map, split);
 		free(read);
 		ft_split_free(split);
+		read = get_next_line(fd);
 	}
 	print_map(map);
 	return (map);

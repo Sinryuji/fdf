@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 16:06:22 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/16 18:28:48 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ typedef struct s_map
 
 /* map.c */
 t_map	*read_map(char *map_str);
+void	map_free(t_map *map, int err_code);
 
 #endif

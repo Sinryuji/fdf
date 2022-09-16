@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 16:09:17 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/16 18:51:24 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		put_error(ERR_USAGE);
 	map = read_map(argv[1]);
-	(void)map;
+	map_free(map, 0);
 	return (0);
 }

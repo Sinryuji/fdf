@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 15:37:55 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/16 17:10:41 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include "../../lib/libft/include/libft.h"
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
+
+void	map_free(t_map *map)
+{
+	(void)map;
+}
 
 int	get_map_size(t_map *map, int fd)
 {
@@ -30,13 +36,15 @@ int	get_map_size(t_map *map, int fd)
 			break ;
 		split = ft_split(read, ' ');
 		if (!split)
-			return (-1);
+			return (ERR_SPLIT);
 		map->height++;
 		map->width = 0;
 		while (split[map->width])
 			map->width++;
+		if (*split[map->width - 1] == '\n')
+			map->width--;
 		if (save >= 0 && save != map->width)
-			return (-2);
+			return (ERR_MAP_SIZE);
 		save = map->width;
 		free(read);
 		ft_split_free(split);
@@ -52,23 +60,62 @@ t_map	*init_map(char *map_str)
 
 	fd = open(map_str, O_RDONLY);
 	if (fd < 0)
-		ft_puterr("Map reading error\n");
+		put_error(ERR_OPEN);
 	map = (t_map *)malloc(sizeof(t_map));
 	if (!map)
-		ft_puterr("Map malloc error\n");
+		put_error(ERR_MAP_MALLOC);
 	ret = get_map_size(map, fd);
-	if (ret < 0)
+	close(fd);
+	if (ret < 0 || map->width < 1 || map->height < 1)
 	{
 		free(map);
-		close(fd);
-		if (ret == -1)
-			ft_puterr("Split error\n");
-		else if (ret == -2)
-			ft_puterr("The width of the map is inconsistent\n");
+		put_error(ret);
 	}
-	close(fd);
 	map->map = (t_dot *)malloc(sizeof(t_dot) * map->height * map->width);
+	if (!map->map)
+	{
+		free(map);
+		put_error(ERR_OPEN);
+	}
 	return (map);
+}
+
+void	get_map_data(t_map *map, char **split, int *cnt)
+{
+	int		i;
+	char	**data_str;
+
+	i = 0;
+	while (i < map->width)
+	{
+		data_str = ft_split(split[i], ',');
+		if (!data_str)
+		{
+			free(map);
+			ft_split_free(split);
+			put_error(ERR_SPLIT);
+		}
+		map->map[*cnt].value = ft_atoi(data_str[0]);
+		if (data_str[1])
+			map->map[*cnt].color = ft_atoi(data_str[1]);
+		i++;
+		(*cnt)++;
+		ft_split_free(data_str);
+	}
+}
+
+void	print_map(t_map *map)
+{
+	int	i;
+	
+	i = 0;
+	while (i < map->width * map->height)
+	{
+		printf("%d,%d ", map->map[i].value, map->map[i].color);
+		if ((i + 1) % map->width == 0)
+			printf("\n");
+		i++;
+	}
 }
 
 t_map	*read_map(char *map_str)
@@ -77,19 +124,25 @@ t_map	*read_map(char *map_str)
 	char	**split;
 	t_map	*map;
 	int		fd;
+	int		*cnt;
 
 	map = init_map(map_str);
 	fd = open(map_str, O_RDONLY);
+	if (fd < 0)
+		put_error(ERR_OPEN);
+	cnt = (int *)ft_calloc(sizeof(int *), 1);
 	while (1)
 	{
 		read = get_next_line(fd);
 		if (!read)
 			break ;
-		map->width++;
 		split = ft_split(read, ' ');
 		if (!split)
-			ft_puterr("Split error\n");
+			put_error(ERR_SPLIT);
+		get_map_data(map, split, cnt);
+		free(read);
 		ft_split_free(split);
 	}
+	print_map(map);
 	return (map);
 }

@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 15:36:38 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/16 16:09:17 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,8 @@ int	main(int argc, char **argv)
 	t_map	*map;
 
 	if (argc != 2)
-		ft_puterr("Invalid number of factors.\nUsage: ./fdf [fdf file]\n");
+		put_error(ERR_USAGE);
 	map = read_map(argv[1]);
 	(void)map;
-	// init_map은 했으니 read_map 완성하자
 	return (0);
 }

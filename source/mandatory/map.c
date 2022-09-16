@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 17:10:41 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/16 18:19:32 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,9 @@ int	get_map_size(t_map *map, int fd)
 	int		save;
 
 	save = -1;
-	map->height = 0;
-	while (1)
+	read = get_next_line(fd);
+	while (read)
 	{
-		read = get_next_line(fd);
-		if (!read)
-			break ;
 		split = ft_split(read, ' ');
 		if (!split)
 			return (ERR_SPLIT);
@@ -48,6 +45,7 @@ int	get_map_size(t_map *map, int fd)
 		save = map->width;
 		free(read);
 		ft_split_free(split);
+		read = get_next_line(fd);
 	}
 	return (0);
 }
@@ -64,6 +62,7 @@ t_map	*init_map(char *map_str)
 	map = (t_map *)malloc(sizeof(t_map));
 	if (!map)
 		put_error(ERR_MAP_MALLOC);
+	map->height = 0;
 	ret = get_map_size(map, fd);
 	close(fd);
 	if (ret < 0 || map->width < 1 || map->height < 1)
@@ -97,7 +96,7 @@ void	get_map_data(t_map *map, char **split, int *cnt)
 		}
 		map->map[*cnt].value = ft_atoi(data_str[0]);
 		if (data_str[1])
-			map->map[*cnt].color = ft_atoi(data_str[1]);
+			map->map[*cnt].color = ft_atoi_hex(data_str[1]);
 		i++;
 		(*cnt)++;
 		ft_split_free(data_str);
@@ -107,7 +106,7 @@ void	get_map_data(t_map *map, char **split, int *cnt)
 void	print_map(t_map *map)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < map->width * map->height)
 	{

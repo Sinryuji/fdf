@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/17 17:07:12 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/17 19:36:37 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ static t_map	*init_map(char *file_addr)
 	close(fd);
 	if (ret < 0 || map->width < 1 || map->height < 1)
 		map_free(map, ret);
-	map->map = (t_dot *)malloc(sizeof(t_dot) * map->height * map->width);
+	map->map = (t_point *)malloc(sizeof(t_point) * map->height * map->width);
 	if (!map->map)
 		map_free(map, ERR_MALLOC);
-	ft_memset(map->map, 0, sizeof(t_dot) * map->height * map->width);
+	ft_memset(map->map, 0, sizeof(t_point) * map->height * map->width);
 	return (map);
 }
 

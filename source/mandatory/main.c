@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 19:15:21 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/17 16:01:26 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,38 +33,42 @@ int	key_hook(int key_code, t_mlx *mlx)
 	return (0);
 }
 
-void	print_image(t_map *map)
+void	print_image(t_mlx *mlx, t_data *img)
 {
-	t_mlx	mlx;
-	t_data	img;
-	int		x;
-	int		y;
+	int	x;
+	int	y;
 
-	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, WIDTH, HEIGHT, "Hello world!");
-	img.img = mlx_new_image(mlx.mlx, WIDTH, HEIGHT);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
-	&img.line_length, &img.endian);
-	x = -1;
-	while (++x < WIDTH)
+	x = 0;
+	while (x < WIDTH)
 	{
-		y = -1;
-		while (++y < HEIGHT)
-			pixel_set(&img, x, y, 0x0000FF00);
+		y = 0;
+		while (y < HEIGHT)
+		{
+			pixel_set(img, x, y, 0x0000FF00);
+			y++;
+		}
+		x++;
 	}
-	mlx_put_image_to_window(mlx.mlx, mlx.win, img.img, 0, 0);
-	mlx_key_hook(mlx.win, key_hook, &mlx);
-	mlx_loop(mlx.mlx);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, img->img, 0, 0);
+	mlx_key_hook(mlx->win, key_hook, mlx);
+	mlx_loop(mlx->mlx);
 }
 
 int	main(int argc, char **argv)
 {
 	t_map	*map;
+	t_mlx	*mlx;
+	t_data	*img;
 
 	if (argc != 2)
 		put_error(ERR_USAGE);
 	map = read_map(argv[1]);
-	print_image(map);
+	mlx = (t_mlx *)malloc(sizeof(t_mlx));
+	img = (t_data *)malloc(sizeof(t_data));
+	if (!mlx || !img)
+		put_error(ERR_MALLOC);
+	mlx_img_init(mlx, img);
+	print_image(mlx, img);
 	map_free(map, 0);
 	return (0);
 }

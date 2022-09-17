@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 19:10:36 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/17 15:55:34 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FDF_H
 
 # include "error.h"
+#include <stdio.h>
 
 # define WIDTH 1280
 # define HEIGHT 720
@@ -47,7 +48,10 @@ typedef struct s_map
 }	t_map;
 
 /* map.c */
-t_map	*read_map(char *map_str);
+t_map	*read_map(char *file_addr);
 void	map_free(t_map *map, int err_code);
+
+/* mlx.c */
+void	mlx_img_init(t_mlx *mlx, t_data *img);
 
 #endif

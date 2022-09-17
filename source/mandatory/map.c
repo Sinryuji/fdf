@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 18:50:41 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/17 16:02:14 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "../../lib/libft/include/libft.h"
 #include <fcntl.h>
 #include <unistd.h>
-#include <stdio.h>
 
 void	map_free(t_map *map, int err_code)
 {	
@@ -54,18 +53,18 @@ int	get_map_size(t_map *map, int fd)
 	return (0);
 }
 
-static t_map	*init_map(char *map_str)
+static t_map	*init_map(char *file_addr)
 {
 	int		fd;
 	t_map	*map;
 	int		ret;
 
-	fd = open(map_str, O_RDONLY);
+	fd = open(file_addr, O_RDONLY);
 	if (fd < 0)
 		put_error(ERR_OPEN);
 	map = (t_map *)malloc(sizeof(t_map));
 	if (!map)
-		put_error(ERR_MAP_MALLOC);
+		put_error(ERR_MALLOC);
 	map->height = 0;
 	ret = get_map_size(map, fd);
 	close(fd);
@@ -73,7 +72,8 @@ static t_map	*init_map(char *map_str)
 		map_free(map, ret);
 	map->map = (t_dot *)malloc(sizeof(t_dot) * map->height * map->width);
 	if (!map->map)
-		map_free(map, ret);
+		map_free(map, ERR_MALLOC);
+	ft_memset(map->map, 0, sizeof(t_dot) * map->height * map->width);
 	return (map);
 }
 
@@ -116,15 +116,15 @@ static void	print_map(t_map *map)
 	}
 }
 
-t_map	*read_map(char *map_str)
+t_map	*read_map(char *file_addr)
 {
 	char	*read;
 	char	**split;
 	t_map	*map;
 	int		fd;
 
-	map = init_map(map_str);
-	fd = open(map_str, O_RDONLY);
+	map = init_map(file_addr);
+	fd = open(file_addr, O_RDONLY);
 	if (fd < 0)
 	{
 		map_free(map, 0);

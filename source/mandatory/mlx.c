@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/16 16:00:17 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/17 15:52:29 by hyeongki         ###   ########.fr       */
+/*   Created: 2022/09/17 15:43:43 by hyeongki          #+#    #+#             */
+/*   Updated: 2022/09/17 15:46:43 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_H
-# define ERROR_H
+#include "../../include/fdf.h"
+#include "../../lib/minilibx_opengl_20191021/mlx.h"
 
-# define ERR_USAGE -1
-# define ERR_OPEN -2
-# define ERR_SPLIT -3
-# define ERR_MALLOC -4
-# define ERR_MAP_SIZE -5
-
-/* error.c */
-void	put_error(int err_code);
-
-#endif
+void	mlx_img_init(t_mlx *mlx, t_data *img)
+{
+	mlx->mlx = mlx_init();
+	mlx->win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, "Hello world!");
+	img->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, \
+	&img->line_length, &img->endian);
+}

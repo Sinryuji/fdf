@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 18:28:48 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/16 19:10:36 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define FDF_H
 
 # include "error.h"
+
+# define WIDTH 1280
+# define HEIGHT 720
 
 typedef struct s_data
 {

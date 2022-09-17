@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/16 18:51:24 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/16 19:15:21 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	key_hook(int key_code, t_mlx *mlx)
 	return (0);
 }
 
-void	print_image(void)
+void	print_image(t_map *map)
 {
 	t_mlx	mlx;
 	t_data	img;
@@ -41,16 +41,16 @@ void	print_image(void)
 	int		y;
 
 	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, 500, 500, "Hello world!");
-	img.img = mlx_new_image(mlx.mlx, 500, 500);
+	mlx.win = mlx_new_window(mlx.mlx, WIDTH, HEIGHT, "Hello world!");
+	img.img = mlx_new_image(mlx.mlx, WIDTH, HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
 	&img.line_length, &img.endian);
 	x = -1;
-	while (++x < 500)
+	while (++x < WIDTH)
 	{
 		y = -1;
-		while (++y < 500)
-			pixel_set(&img, x, y, 0x00FF0000);
+		while (++y < HEIGHT)
+			pixel_set(&img, x, y, 0x0000FF00);
 	}
 	mlx_put_image_to_window(mlx.mlx, mlx.win, img.img, 0, 0);
 	mlx_key_hook(mlx.win, key_hook, &mlx);
@@ -64,6 +64,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		put_error(ERR_USAGE);
 	map = read_map(argv[1]);
+	print_image(map);
 	map_free(map, 0);
 	return (0);
 }

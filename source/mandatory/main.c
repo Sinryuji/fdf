@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/17 16:01:26 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/17 18:36:28 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,28 @@ int	key_hook(int key_code, t_mlx *mlx)
 	return (0);
 }
 
-void	print_image(t_mlx *mlx, t_data *img)
+void	print_image(t_map *map, t_mlx *mlx, t_data *img)
 {
 	int	x;
 	int	y;
+	int	i;
+	int	j;
 
-	x = 0;
-	while (x < WIDTH)
+	x = WIDTH / 3;
+	i = 0;
+	while (x < WIDTH / 3 * 2 && i < map->width)
 	{
-		y = 0;
-		while (y < HEIGHT)
+		y = HEIGHT / 3;
+		j = 0;
+		while (y < HEIGHT / 3 * 2 && j < map->height)
 		{
-			pixel_set(img, x, y, 0x0000FF00);
+			if (x == WIDTH / 3 + (WIDTH / 3 / map->width * i) && y == HEIGHT / 3 + (HEIGHT / 3 / map->height * j))
+			{
+				pixel_set(img, x, y, 0x0000FF00);
+				j++;
+				if (j == map->height)
+					i++;
+			}
 			y++;
 		}
 		x++;
@@ -68,7 +78,7 @@ int	main(int argc, char **argv)
 	if (!mlx || !img)
 		put_error(ERR_MALLOC);
 	mlx_img_init(mlx, img);
-	print_image(mlx, img);
+	print_image(map, mlx, img);
 	map_free(map, 0);
 	return (0);
 }

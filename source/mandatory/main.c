@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/19 21:40:39 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/19 22:37:17 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,6 @@ int	key_hook(int key_code, t_fdf *fdf)
 		exit(0);
 	}
 	return (0);
-}
-
-t_dot	get_dot(int x, int y, t_map *map)
-{
-	t_dot	new;
-	int		width;
-	int		height;
-
-	width = 0;
-	height = 0;
-	new.x = x;
-	new.y = y;
-	while (x > WIDTH / 3)
-	{
-		width++;
-		x -= WIDTH / 3 / map->width;
-	}
-	while (y > HEIGHT / 3)
-	{
-		height++;
-		y -= HEIGHT / 3 / map->height;
-	}
-//	new.z = map->map[height * 10 + width].value;
-//	new.color = map->map[height * 10 + width].color;
-	return (new);
 }
 
 void	dda(t_fdf *fdf, t_dot dot1, t_dot dot2)
@@ -89,47 +64,75 @@ void	print_line(t_fdf *fdf, t_map *map, double x, double y)
 	t_dot	dot1;
 	t_dot	dot2;
 
-	dot2 = get_dot(x, y, map);
+	dot2.x = x;
+	dot2.y = y;
 	if (x > WIDTH / 3)
 	{
-		dot1 = get_dot(x - WIDTH / 3 / map->width, y, map);
+		dot1.x = x - WIDTH / 3 / map->width;
+		dot1.y = y;
 //		isometric(&dot1.x, &dot1.y, dot1.z);
 		dda(fdf, dot1, dot2);
 	}
 	if (y > HEIGHT / 3)
 	{
-		dot1 = get_dot(x, y - HEIGHT / 3 / map->height, map);
+		dot1.x = x;
+		dot1.y = y - HEIGHT / 3/ map->height;;
 //		isometric(&dot1.x, &dot1.y, dot1.z);
 		dda(fdf, dot1, dot2);
 	}
 }
 
-void	print_image(t_map *map, t_fdf *fdf)
+void	print_dot(t_fdf *fdf, t_map *map, int i, int j)
 {
 	double	x;
 	double	y;
-	double	i;
-	double	j;
+	double	x_gap;
+	double	y_gap;
 
-	x = WIDTH / 3;
+	x = (double)WIDTH / 4;
+	y = (double)HEIGHT / 4;
+	x_gap = (x * 3 - x) / (map->width - 2);
+	y_gap = (y * 3 - y) / (map->height - 2);
+	x += x_gap * i;
+	y += y_gap * j;
+	mlx_pixel_put(fdf->mlx, fdf->win, x, y, 0x00FFFFFF);
+}
+
+void	print_image(t_map *map, t_fdf *fdf)
+{
+	int	i;
+	int	j;
+
+//	x = WIDTH / 3;
+//	i = 0;
+//	while (x < WIDTH / 3 * 2 && i < map->width)
+//	{
+//		y = HEIGHT / 3;
+//		j = 0;
+//		while (y < HEIGHT / 3 * 2 && j < map->height)
+//		{
+//			if (x == WIDTH / 3 + (WIDTH / 3 / map->width * i) \
+//					&& y == HEIGHT / 3 + (HEIGHT / 3 / map->height * j))
+//			{
+//				print_line(fdf, map, x, y);
+//				j++;
+//				if (j == map->height)
+//					i++;
+//			}
+//			y++;
+//		}
+//		x++;
+//	}
 	i = 0;
-	while (x < WIDTH / 3 * 2 && i < map->width)
+	while (i < map->width)
 	{
-		y = HEIGHT / 3;
 		j = 0;
-		while (y < HEIGHT / 3 * 2 && j < map->height)
+		while (j < map->height)
 		{
-			if (x == WIDTH / 3 + (WIDTH / 3 / map->width * i) \
-					&& y == HEIGHT / 3 + (HEIGHT / 3 / map->height * j))
-			{
-				print_line(fdf, map, x, y);
-				j++;
-				if (j == map->height)
-					i++;
-			}
-			y++;
+			print_dot(fdf, map, i, j);
+			j++;
 		}
-		x++;
+		i++;
 	}
 }
 
@@ -147,7 +150,7 @@ int	main(int argc, char **argv)
 	map = read_map(fd);
 	fdf = fdf_init();
 	print_image(map, fdf);
-	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+//	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 	mlx_key_hook(fdf->win, key_hook, fdf);
 	mlx_loop(fdf->mlx);
 	return (0);

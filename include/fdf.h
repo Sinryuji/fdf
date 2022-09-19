@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/17 20:08:07 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/18 17:46:05 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include "error.h"
 # include <stdio.h>
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 1280
+# define HEIGHT 720
 
 typedef struct s_data
 {
@@ -51,6 +51,8 @@ typedef struct s_dot
 {
 	double	x;
 	double	y;
+	double	z;
+	int		color;
 }	t_dot;
 
 /* map.c */
@@ -59,5 +61,8 @@ void	map_free(t_map *map, int err_code);
 
 /* mlx.c */
 void	mlx_img_init(t_mlx *mlx, t_data *img);
+
+/* isometric.c */
+void	isometric(double *x, double *y, double z);
 
 #endif

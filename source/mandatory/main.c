@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/17 20:17:52 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/18 17:46:53 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,31 @@ int	key_hook(int key_code, t_mlx *mlx)
 	return (0);
 }
 
+t_dot	get_dot(int x, int y, t_map *map)
+{
+	t_dot	new;
+	int		width;
+	int		height;
+
+	width = 0;
+	height = 0;
+	new.x = x;
+	new.y = y;
+	while (x > WIDTH / 3)
+	{
+		width++;
+		x -= WIDTH / 3 / map->width;
+	}
+	while (y > HEIGHT / 3)
+	{
+		height++;
+		y -= HEIGHT / 3 / map->height;
+	}
+	new.z = map->map[height * 10 + width].value;
+	new.color = map->map[height * 10 + width].color;
+	return (new);
+}
+
 void	dda(t_data *img, t_mlx *mlx, t_dot dot1, t_dot dot2)
 {
 	double	dx;
@@ -54,7 +79,7 @@ void	dda(t_data *img, t_mlx *mlx, t_dot dot1, t_dot dot2)
 		dot1.x += dx / step;
 		dot1.y += dy / step;
 //		pixel_set(img, dot1.x, dot1.y, 0x0000FF00);
-		mlx_pixel_put(mlx->mlx, mlx->win, dot1.x, dot1.y, 0x0000FF00);
+		mlx_pixel_put(mlx->mlx, mlx->win, dot1.x, dot1.y, 0x00FFFFFF);
 		i++;
 	}
 }
@@ -64,18 +89,17 @@ void	print_line(t_data *img, t_mlx *mlx, t_map *map, double x, double y)
 	t_dot	dot1;
 	t_dot	dot2;
 
-	dot1.x = x;
-	dot1.y = y;
+	dot2 = get_dot(x, y, map);
 	if (x > WIDTH / 3)
 	{
-		dot2.x = x - WIDTH / 3 / map->width;
-		dot2.y = y;
+		dot1 = get_dot(x - WIDTH / 3 / map->width, y, map);
+		isometric(&dot1.x, &dot1.y, dot1.z);
 		dda(img, mlx, dot1, dot2);
 	}
 	if (y > HEIGHT / 3)
 	{
-		dot2.x = x;
-		dot2.y = y - HEIGHT / 3 / map->height;
+		dot1 = get_dot(x, y - HEIGHT / 3 / map->height, map);
+		isometric(&dot1.x, &dot1.y, dot1.z);
 		dda(img, mlx, dot1, dot2);
 	}
 }

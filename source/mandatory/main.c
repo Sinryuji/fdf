@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/18 17:46:53 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/19 21:40:39 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,22 @@
 #include "../../lib/libft/include/libft.h"
 #include "../../lib/minilibx_opengl_20191021/mlx.h"
 #include <math.h>
+#include <fcntl.h>
 
-void	pixel_set(t_data *data, int x, int y, int color)
+void	pixel_set(t_fdf *fdf, int x, int y, int color)
 {
 	char	*pixel;
 
-	pixel = data->addr + (y * data->line_length + x * \
-	(data->bits_per_pixel / 8));
+	pixel = fdf->addr + (y * fdf->line_length + x * \
+	(fdf->bits_per_pixel / 8));
 	*(unsigned int *)pixel = color;
 }
 
-int	key_hook(int key_code, t_mlx *mlx)
+int	key_hook(int key_code, t_fdf *fdf)
 {
 	if (key_code == 53)
 	{
-		mlx_destroy_window(mlx->mlx, mlx->win);
+		mlx_destroy_window(fdf->mlx, fdf->win);
 		exit(0);
 	}
 	return (0);
@@ -54,19 +55,18 @@ t_dot	get_dot(int x, int y, t_map *map)
 		height++;
 		y -= HEIGHT / 3 / map->height;
 	}
-	new.z = map->map[height * 10 + width].value;
-	new.color = map->map[height * 10 + width].color;
+//	new.z = map->map[height * 10 + width].value;
+//	new.color = map->map[height * 10 + width].color;
 	return (new);
 }
 
-void	dda(t_data *img, t_mlx *mlx, t_dot dot1, t_dot dot2)
+void	dda(t_fdf *fdf, t_dot dot1, t_dot dot2)
 {
 	double	dx;
 	double	dy;
 	double	step;
 	double	i;
 
-	(void)img;
 	dx = dot2.x - dot1.x;
 	dy = dot2.y - dot1.y;
 	if (fabs(dx) > fabs(dy))
@@ -79,12 +79,12 @@ void	dda(t_data *img, t_mlx *mlx, t_dot dot1, t_dot dot2)
 		dot1.x += dx / step;
 		dot1.y += dy / step;
 //		pixel_set(img, dot1.x, dot1.y, 0x0000FF00);
-		mlx_pixel_put(mlx->mlx, mlx->win, dot1.x, dot1.y, 0x00FFFFFF);
+		mlx_pixel_put(fdf->mlx, fdf->win, dot1.x, dot1.y, 0x00FFFFFF);
 		i++;
 	}
 }
 
-void	print_line(t_data *img, t_mlx *mlx, t_map *map, double x, double y)
+void	print_line(t_fdf *fdf, t_map *map, double x, double y)
 {
 	t_dot	dot1;
 	t_dot	dot2;
@@ -93,18 +93,18 @@ void	print_line(t_data *img, t_mlx *mlx, t_map *map, double x, double y)
 	if (x > WIDTH / 3)
 	{
 		dot1 = get_dot(x - WIDTH / 3 / map->width, y, map);
-		isometric(&dot1.x, &dot1.y, dot1.z);
-		dda(img, mlx, dot1, dot2);
+//		isometric(&dot1.x, &dot1.y, dot1.z);
+		dda(fdf, dot1, dot2);
 	}
 	if (y > HEIGHT / 3)
 	{
 		dot1 = get_dot(x, y - HEIGHT / 3 / map->height, map);
-		isometric(&dot1.x, &dot1.y, dot1.z);
-		dda(img, mlx, dot1, dot2);
+//		isometric(&dot1.x, &dot1.y, dot1.z);
+		dda(fdf, dot1, dot2);
 	}
 }
 
-void	print_image(t_map *map, t_mlx *mlx, t_data *img)
+void	print_image(t_map *map, t_fdf *fdf)
 {
 	double	x;
 	double	y;
@@ -122,7 +122,7 @@ void	print_image(t_map *map, t_mlx *mlx, t_data *img)
 			if (x == WIDTH / 3 + (WIDTH / 3 / map->width * i) \
 					&& y == HEIGHT / 3 + (HEIGHT / 3 / map->height * j))
 			{
-				print_line(img, mlx, map, x, y);
+				print_line(fdf, map, x, y);
 				j++;
 				if (j == map->height)
 					i++;
@@ -135,22 +135,20 @@ void	print_image(t_map *map, t_mlx *mlx, t_data *img)
 
 int	main(int argc, char **argv)
 {
+	int		fd;
 	t_map	*map;
-	t_mlx	*mlx;
-	t_data	*img;
+	t_fdf	*fdf;
 
 	if (argc != 2)
 		put_error(ERR_USAGE);
-	map = read_map(argv[1]);
-	mlx = (t_mlx *)malloc(sizeof(t_mlx));
-	img = (t_data *)malloc(sizeof(t_data));
-	if (!mlx || !img)
-		put_error(ERR_MALLOC);
-	mlx_img_init(mlx, img);
-	print_image(map, mlx, img);
-//	mlx_put_image_to_window(mlx->mlx, mlx->win, img->img, 0, 0);
-	mlx_key_hook(mlx->win, key_hook, mlx);
-	mlx_loop(mlx->mlx);
-	map_free(map, 0);
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0)
+		put_error(ERR_OPEN);
+	map = read_map(fd);
+	fdf = fdf_init();
+	print_image(map, fdf);
+	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+	mlx_key_hook(fdf->win, key_hook, fdf);
+	mlx_loop(fdf->mlx);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/18 17:46:05 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/19 21:24:03 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,31 @@
 # define WIDTH 1280
 # define HEIGHT 720
 
-typedef struct s_data
+typedef struct s_fdf
 {
+	void	*mlx;
+	void	*win;	
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}	t_data;
-
-typedef struct s_mlx
-{
-	void	*mlx;
-	void	*win;	
-}	t_mlx;
-
-typedef struct s_point
-{
-	int				value;
-	int				color;
-}	t_point;
+}	t_fdf;
 
 typedef struct s_map
 {
-	int				width;
-	int				height;
-	struct s_point	*map;
+	int	width;
+	int	height;
+	int	*z_arr;
+	int	*color_arr;
 }	t_map;
+
+typedef struct s_data
+{
+	int				z;
+	int				color;
+	struct s_data	*next;
+}	t_data;
 
 typedef struct s_dot
 {
@@ -56,11 +54,15 @@ typedef struct s_dot
 }	t_dot;
 
 /* map.c */
-t_map	*read_map(char *file_addr);
+t_map	*read_map(int fd);
 void	map_free(t_map *map, int err_code);
 
-/* mlx.c */
-void	mlx_img_init(t_mlx *mlx, t_data *img);
+/* fdf.c */
+t_fdf	*fdf_init(void);
+
+/* stack.c */
+void	push(t_data **data, int z, int color);
+void	data_to_arr(t_map *map, t_data *data);
 
 /* isometric.c */
 void	isometric(double *x, double *y, double z);

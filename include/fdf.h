@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/20 11:58:16 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/20 20:23:48 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,7 @@ void	data_to_arr(t_map *map, t_data *data);
 
 /* isometric.c */
 void	isometric(double *x, double *y, double z);
+t_point	project(t_point p);
+void	iso(double *x, double *y, double z);
 
 #endif

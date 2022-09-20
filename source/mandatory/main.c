@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/20 12:08:45 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/20 21:25:27 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ double	get_ratio(t_map *map, int n)
 	double	x;
 	double	d;
 
-	x = (double)WIDTH / 4;
-	d = x * 3 - x;
+	x = (double)WIDTH / 3;
+	d = x * 2 - x;
 	ratio = d / (map->width - 1) / d;
 	return (ratio * n);
 }
@@ -78,25 +78,17 @@ t_point	get_point(t_map *map, int i, int j)
 	double	y;
 	t_point	new;
 
-	x = (double)WIDTH / 4;
-	y = (double)HEIGHT / 4;
-	x += (x * 3 - x) * get_ratio(map, i);
-	y += (y * 3 - y) * get_ratio(map, j);
+	x = (double)WIDTH / 3;
+	y = (double)HEIGHT / 3;
+	x += (x * 2 - x) * get_ratio(map, i);
+	y += (y * 2 - y) * get_ratio(map, j);
 	new.x = x;
 	new.y = y;
+	new.z = map->z_arr[j * map->height + i];
+	isometric(&new.x, &new.y, new.z);
+	new.x += (double)WIDTH / 3;
+	new.y -= (double)HEIGHT / 5;
 	return (new);
-}
-
-void	print_dot(t_fdf *fdf, t_map *map, int i, int j)
-{
-	double	x;
-	double	y;
-
-	x = (double)WIDTH / 4;
-	y = (double)HEIGHT / 4;
-	x += (x * 3 - x) / (map->width - 2) * i;
-	y += (y * 3 - y) / (map->height - 2) * j;
-	mlx_pixel_put(fdf->mlx, fdf->win, x, y, 0x00FFFFFF);
 }
 
 void	print_image(t_map *map, t_fdf *fdf)

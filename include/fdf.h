@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/19 21:24:03 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/20 11:58:16 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ typedef struct s_data
 	struct s_data	*next;
 }	t_data;
 
-typedef struct s_dot
+typedef struct s_point
 {
 	double	x;
 	double	y;
 	double	z;
 	int		color;
-}	t_dot;
+}	t_point;
 
 /* map.c */
 t_map	*read_map(int fd);

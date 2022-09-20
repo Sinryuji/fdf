@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/19 22:37:17 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/20 12:08:45 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,66 +35,67 @@ int	key_hook(int key_code, t_fdf *fdf)
 	return (0);
 }
 
-void	dda(t_fdf *fdf, t_dot dot1, t_dot dot2)
+void	dda(t_fdf *fdf, t_point p1, t_point p2)
 {
 	double	dx;
 	double	dy;
 	double	step;
 	double	i;
 
-	dx = dot2.x - dot1.x;
-	dy = dot2.y - dot1.y;
+	dx = p2.x - p1.x;
+	dy = p2.y - p1.y;
 	if (fabs(dx) > fabs(dy))
 		step = fabs(dx);
 	else
 		step = fabs(dy);
 	i = 0;
+	mlx_pixel_put(fdf->mlx, fdf->win, p1.x, p1.y, 0x00FFFFFF);
 	while (i <= step)
 	{
-		dot1.x += dx / step;
-		dot1.y += dy / step;
+		p1.x += dx / step;
+		p1.y += dy / step;
 //		pixel_set(img, dot1.x, dot1.y, 0x0000FF00);
-		mlx_pixel_put(fdf->mlx, fdf->win, dot1.x, dot1.y, 0x00FFFFFF);
+		mlx_pixel_put(fdf->mlx, fdf->win, p1.x, p1.y, 0x00FFFFFF);
 		i++;
 	}
 }
 
-void	print_line(t_fdf *fdf, t_map *map, double x, double y)
+double	get_ratio(t_map *map, int n)
 {
-	t_dot	dot1;
-	t_dot	dot2;
+	double	ratio;
+	double	x;
+	double	d;
 
-	dot2.x = x;
-	dot2.y = y;
-	if (x > WIDTH / 3)
-	{
-		dot1.x = x - WIDTH / 3 / map->width;
-		dot1.y = y;
-//		isometric(&dot1.x, &dot1.y, dot1.z);
-		dda(fdf, dot1, dot2);
-	}
-	if (y > HEIGHT / 3)
-	{
-		dot1.x = x;
-		dot1.y = y - HEIGHT / 3/ map->height;;
-//		isometric(&dot1.x, &dot1.y, dot1.z);
-		dda(fdf, dot1, dot2);
-	}
+	x = (double)WIDTH / 4;
+	d = x * 3 - x;
+	ratio = d / (map->width - 1) / d;
+	return (ratio * n);
+}
+
+t_point	get_point(t_map *map, int i, int j)
+{
+	double	x;
+	double	y;
+	t_point	new;
+
+	x = (double)WIDTH / 4;
+	y = (double)HEIGHT / 4;
+	x += (x * 3 - x) * get_ratio(map, i);
+	y += (y * 3 - y) * get_ratio(map, j);
+	new.x = x;
+	new.y = y;
+	return (new);
 }
 
 void	print_dot(t_fdf *fdf, t_map *map, int i, int j)
 {
 	double	x;
 	double	y;
-	double	x_gap;
-	double	y_gap;
 
 	x = (double)WIDTH / 4;
 	y = (double)HEIGHT / 4;
-	x_gap = (x * 3 - x) / (map->width - 2);
-	y_gap = (y * 3 - y) / (map->height - 2);
-	x += x_gap * i;
-	y += y_gap * j;
+	x += (x * 3 - x) / (map->width - 2) * i;
+	y += (y * 3 - y) / (map->height - 2) * j;
 	mlx_pixel_put(fdf->mlx, fdf->win, x, y, 0x00FFFFFF);
 }
 
@@ -103,33 +104,16 @@ void	print_image(t_map *map, t_fdf *fdf)
 	int	i;
 	int	j;
 
-//	x = WIDTH / 3;
-//	i = 0;
-//	while (x < WIDTH / 3 * 2 && i < map->width)
-//	{
-//		y = HEIGHT / 3;
-//		j = 0;
-//		while (y < HEIGHT / 3 * 2 && j < map->height)
-//		{
-//			if (x == WIDTH / 3 + (WIDTH / 3 / map->width * i) \
-//					&& y == HEIGHT / 3 + (HEIGHT / 3 / map->height * j))
-//			{
-//				print_line(fdf, map, x, y);
-//				j++;
-//				if (j == map->height)
-//					i++;
-//			}
-//			y++;
-//		}
-//		x++;
-//	}
 	i = 0;
 	while (i < map->width)
 	{
 		j = 0;
 		while (j < map->height)
 		{
-			print_dot(fdf, map, i, j);
+			if (i < map->width - 1)
+				dda(fdf, get_point(map, i, j), get_point(map, i + 1, j));
+			if (j < map->height - 1)
+				dda(fdf, get_point(map, i, j), get_point(map, i, j + 1));
 			j++;
 		}
 		i++;

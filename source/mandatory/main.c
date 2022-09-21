@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/20 21:25:27 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/21 14:11:09 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,18 @@ int	key_hook(int key_code, t_fdf *fdf)
 		mlx_destroy_window(fdf->mlx, fdf->win);
 		exit(0);
 	}
+	return (0);
+}
+
+int	mouse_hook(int button, int x, int y, t_fdf *fdf)
+{
+	(void)fdf;
+	if (button == 1)
+		printf("x : %d y : %d\n", x, y);
+	if (button == 4)
+		printf("x : %d y : %d\n", x, y);
+	if (button == 5)
+		printf("x : %d y : %d\n", x, y);
 	return (0);
 }
 
@@ -66,7 +78,7 @@ double	get_ratio(t_map *map, int n)
 	double	x;
 	double	d;
 
-	x = (double)WIDTH / 3;
+	x = map->map_width / 3;
 	d = x * 2 - x;
 	ratio = d / (map->width - 1) / d;
 	return (ratio * n);
@@ -78,16 +90,16 @@ t_point	get_point(t_map *map, int i, int j)
 	double	y;
 	t_point	new;
 
-	x = (double)WIDTH / 3;
-	y = (double)HEIGHT / 3;
+	x = map->map_width / 3;
+	y = map->map_height / 3;
 	x += (x * 2 - x) * get_ratio(map, i);
 	y += (y * 2 - y) * get_ratio(map, j);
 	new.x = x;
 	new.y = y;
 	new.z = map->z_arr[j * map->height + i];
 	isometric(&new.x, &new.y, new.z);
-	new.x += (double)WIDTH / 3;
-	new.y -= (double)HEIGHT / 5;
+	new.x += map->map_width / 3;
+	new.y -= map->map_height / 5;
 	return (new);
 }
 
@@ -128,6 +140,7 @@ int	main(int argc, char **argv)
 	print_image(map, fdf);
 //	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 	mlx_key_hook(fdf->win, key_hook, fdf);
+	mlx_mouse_hook(fdf->win, mouse_hook, fdf);
 	mlx_loop(fdf->mlx);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/20 20:23:48 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/21 14:08:43 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ typedef struct s_fdf
 
 typedef struct s_map
 {
-	int	width;
-	int	height;
-	int	*z_arr;
-	int	*color_arr;
+	int		width;
+	int		height;
+	int		*z_arr;
+	int		*color_arr;
+	double	map_width;
+	double	map_height;
 }	t_map;
 
 typedef struct s_data
@@ -52,6 +54,11 @@ typedef struct s_point
 	double	z;
 	int		color;
 }	t_point;
+
+typedef struct s_view
+{
+	
+}	t_view;
 
 /* map.c */
 t_map	*read_map(int fd);

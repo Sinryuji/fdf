@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/21 14:11:09 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:45:37 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,20 @@ int	key_hook(int key_code, t_fdf *fdf)
 
 int	mouse_hook(int button, int x, int y, t_fdf *fdf)
 {
-	(void)fdf;
 	if (button == 1)
 		printf("x : %d y : %d\n", x, y);
 	if (button == 4)
-		printf("x : %d y : %d\n", x, y);
+	{
+		fdf->map->map_width *= 0.9;
+		fdf->map->map_height *= 0.9;
+		print_image(fdf->map, fdf);
+	}
 	if (button == 5)
-		printf("x : %d y : %d\n", x, y);
+	{
+		fdf->map->map_width *= 1.1;
+		fdf->map->map_height *= 1.1;
+		print_image(fdf->map, fdf);
+	}
 	return (0);
 }
 
@@ -61,13 +68,13 @@ void	dda(t_fdf *fdf, t_point p1, t_point p2)
 	else
 		step = fabs(dy);
 	i = 0;
-	mlx_pixel_put(fdf->mlx, fdf->win, p1.x, p1.y, 0x00FFFFFF);
+	pixel_set(fdf, p1.x, p1.y, 0x00FFFFFF);
 	while (i <= step)
 	{
 		p1.x += dx / step;
 		p1.y += dy / step;
-//		pixel_set(img, dot1.x, dot1.y, 0x0000FF00);
-		mlx_pixel_put(fdf->mlx, fdf->win, p1.x, p1.y, 0x00FFFFFF);
+		pixel_set(fdf, p1.x, p1.y, 0x00FFFFFF);
+//		mlx_pixel_put(fdf->mlx, fdf->win, p1.x, p1.y, 0x00FFFFFF);
 		i++;
 	}
 }
@@ -103,12 +110,31 @@ t_point	get_point(t_map *map, int i, int j)
 	return (new);
 }
 
+void	pixel_clear(t_fdf *fdf)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < fdf->map->map_width)
+	{
+		j = 0;
+		while (j < fdf->map->map_height)
+		{
+			pixel_set(fdf, i, j, 0);	
+			j++;
+		}
+		i++;
+	}
+}
+
 void	print_image(t_map *map, t_fdf *fdf)
 {
 	int	i;
 	int	j;
 
 	i = 0;
+	pixel_clear(fdf);
 	while (i < map->width)
 	{
 		j = 0;
@@ -122,12 +148,12 @@ void	print_image(t_map *map, t_fdf *fdf)
 		}
 		i++;
 	}
+	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 }
 
 int	main(int argc, char **argv)
 {
 	int		fd;
-	t_map	*map;
 	t_fdf	*fdf;
 
 	if (argc != 2)
@@ -135,10 +161,9 @@ int	main(int argc, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		put_error(ERR_OPEN);
-	map = read_map(fd);
 	fdf = fdf_init();
-	print_image(map, fdf);
-//	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+	fdf->map = read_map(fd);
+	print_image(fdf->map, fdf);
 	mlx_key_hook(fdf->win, key_hook, fdf);
 	mlx_mouse_hook(fdf->win, mouse_hook, fdf);
 	mlx_loop(fdf->mlx);

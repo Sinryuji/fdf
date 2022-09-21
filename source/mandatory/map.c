@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/21 14:09:03 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:40:21 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static t_map	*init_map(void)
 	map->color_arr = NULL;
 	map->map_width = (double)WIDTH;
 	map->map_height = (double)HEIGHT;
+	map->x_start = (double)WIDTH / 3;
+	map->y_start = (double)HEIGHT / 3;
 	return (map);
 }
 

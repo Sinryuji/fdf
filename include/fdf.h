@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/21 14:08:43 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:36:44 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@
 
 typedef struct s_fdf
 {
-	void	*mlx;
-	void	*win;	
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+	void			*mlx;
+	void			*win;	
+	void			*img;
+	char			*addr;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
+	struct s_map	*map;
 }	t_fdf;
 
 typedef struct s_map
@@ -38,6 +39,8 @@ typedef struct s_map
 	int		*color_arr;
 	double	map_width;
 	double	map_height;
+	double	x_start;
+	double	y_start;
 }	t_map;
 
 typedef struct s_data
@@ -59,6 +62,10 @@ typedef struct s_view
 {
 	
 }	t_view;
+
+/* main.c */
+void	print_image(t_map *map, t_fdf *fdf);
+void	pixel_clear(t_fdf *fdf);
 
 /* map.c */
 t_map	*read_map(int fd);

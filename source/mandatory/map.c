@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/21 15:40:21 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/22 18:17:45 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../../lib/libft/include/libft.h"
 #include <fcntl.h>
 #include <unistd.h>
+#include <math.h>
 
 static t_map	*init_map(void)
 {
@@ -26,10 +27,7 @@ static t_map	*init_map(void)
 	map->height = 0;
 	map->z_arr = NULL;
 	map->color_arr = NULL;
-	map->map_width = (double)WIDTH;
-	map->map_height = (double)HEIGHT;
-	map->x_start = (double)WIDTH / 3;
-	map->y_start = (double)HEIGHT / 3;
+	map->gap = 0;
 	return (map);
 }
 
@@ -95,6 +93,9 @@ t_map	*read_map(int fd)
 		read = get_next_line(fd);
 	}
 	data_to_arr(map, data);
+	map->gap = (double)HEIGHT / map->height / 3;
+	if (HEIGHT / map->height / 3 > WIDTH / map->width / 3)
+		map->gap = (double)WIDTH / map->width / 3;
 	print_map(map);
 	return (map);
 }

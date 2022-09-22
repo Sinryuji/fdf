@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/21 15:36:44 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/22 18:26:15 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ typedef struct s_map
 	int		height;
 	int		*z_arr;
 	int		*color_arr;
-	double	map_width;
-	double	map_height;
-	double	x_start;
-	double	y_start;
+	double	gap;
 }	t_map;
 
 typedef struct s_data
@@ -58,15 +55,6 @@ typedef struct s_point
 	int		color;
 }	t_point;
 
-typedef struct s_view
-{
-	
-}	t_view;
-
-/* main.c */
-void	print_image(t_map *map, t_fdf *fdf);
-void	pixel_clear(t_fdf *fdf);
-
 /* map.c */
 t_map	*read_map(int fd);
 void	map_free(t_map *map, int err_code);
@@ -82,5 +70,12 @@ void	data_to_arr(t_map *map, t_data *data);
 void	isometric(double *x, double *y, double z);
 t_point	project(t_point p);
 void	iso(double *x, double *y, double z);
+
+/* hook.c */
+int		key_hook(int key_code, t_fdf *fdf);
+int		mouse_hook(int button, int x, int y, t_fdf *fdf);
+
+/* print.c */
+void	print_image(t_map *map, t_fdf *fdf);
 
 #endif

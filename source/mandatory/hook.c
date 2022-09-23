@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 18:20:41 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/22 18:33:24 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/23 20:45:46 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ int	key_hook(int key_code, t_fdf *fdf)
 	{
 		mlx_destroy_window(fdf->mlx, fdf->win);
 		exit(0);
+	}
+	if (key_code >= 123 && key_code <= 126)
+	{
+		map_move(key_code, fdf->map);
+		print_image(fdf->map, fdf);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 18:23:03 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/22 18:27:39 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/23 20:46:22 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ t_point	get_point(t_map *map, int i, int j)
 	new.y = map->gap * j;
 	new.z = map->z_arr[j * map->height + i] * map->gap / 2;
 	isometric(&new.x, &new.y, new.z);
-	new.x += (double)WIDTH / 2;
-	new.y += (double)HEIGHT / 3;
+	new.x += (double)WIDTH / 2 + map->x_move;
+	new.y += (double)HEIGHT / 3 + map->y_move;
 	return (new);
 }
 

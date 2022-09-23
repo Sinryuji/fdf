@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/22 18:26:15 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/23 20:43:59 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef struct s_map
 	int		*z_arr;
 	int		*color_arr;
 	double	gap;
+	double	x_move;
+	double	y_move;
 }	t_map;
 
 typedef struct s_data
@@ -66,10 +68,9 @@ t_fdf	*fdf_init(void);
 void	push(t_data **data, int z, int color);
 void	data_to_arr(t_map *map, t_data *data);
 
-/* isometric.c */
+/* projection.c */
 void	isometric(double *x, double *y, double z);
-t_point	project(t_point p);
-void	iso(double *x, double *y, double z);
+void	map_move(int key_code, t_map *map);
 
 /* hook.c */
 int		key_hook(int key_code, t_fdf *fdf);

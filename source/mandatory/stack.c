@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:48:58 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/19 21:35:54 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/26 20:17:50 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 void	data_to_arr(t_map *map, t_data *data)
 {
-	int	i;
+	int		i;
+	t_data	*tmp;
 
 	i = map->width * map->height;
 	map->z_arr = (int *)malloc(sizeof(int) * i);
@@ -26,7 +27,9 @@ void	data_to_arr(t_map *map, t_data *data)
 	{
 		map->z_arr[i] = data->z;
 		map->color_arr[i] = data->color;
+		tmp = data;
 		data = data->next;
+		free(tmp);
 	}
 }
 

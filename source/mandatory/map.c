@@ -6,15 +6,12 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/26 15:19:00 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/26 20:33:43 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fdf.h"
 #include "../../lib/libft/include/libft.h"
-#include <fcntl.h>
-#include <unistd.h>
-#include <math.h>
 
 static t_map	*init_map(void)
 {
@@ -30,9 +27,6 @@ static t_map	*init_map(void)
 	map->gap = 0;
 	map->x_move = 0;
 	map->y_move = 0;
-	map->alpha = 0;
-	map->beta = 0;
-	map->gamma = 0;
 	return (map);
 }
 
@@ -62,20 +56,6 @@ static void	get_map_data(t_map *map, t_data **data, char **split)
 	map->width = width;
 }
 
-static void	print_map(t_map *map)
-{
-	int	i;
-
-	i = 0;
-	while (i < map->height * map->width)
-	{
-		printf("%d ", map->z_arr[i]);
-		if ((i + 1) % map->width == 0)
-			printf("\n");
-		i++;
-	}
-}
-
 t_map	*read_map(int fd)
 {
 	char	*read;
@@ -101,6 +81,5 @@ t_map	*read_map(int fd)
 	map->gap = (double)HEIGHT / map->height / 3;
 	if (HEIGHT / map->height / 3 > WIDTH / map->width / 3)
 		map->gap = (double)WIDTH / map->width / 3;
-	print_map(map);
 	return (map);
 }

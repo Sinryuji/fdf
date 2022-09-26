@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/24 19:34:28 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/26 20:28:42 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FDF_H
 
 # include "error.h"
-# include <stdio.h>
 
 # define WIDTH 1280
 # define HEIGHT 720
@@ -40,9 +39,6 @@ typedef struct s_map
 	double	gap;
 	double	x_move;
 	double	y_move;
-	double	alpha;
-	double	gamma;
-	double	beta;
 }	t_map;
 
 typedef struct s_data
@@ -82,11 +78,5 @@ int		mouse_hook(int button, int x, int y, t_fdf *fdf);
 
 /* print.c */
 void	print_image(t_map *map, t_fdf *fdf);
-
-/* rotate.c */
-void	rotate_map(int key_code, t_map *map);
-void	rotate_x(t_point *point, double alpha);
-void	rotate_y(t_point *point, double betta);
-void	rotate_z(t_point *point, double gamma);
 
 #endif

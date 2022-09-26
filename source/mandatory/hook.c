@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 18:20:41 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/25 19:17:24 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/26 20:27:58 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ int	key_hook(int key_code, t_fdf *fdf)
 	}
 	if (key_code >= 123 && key_code <= 126)
 		move_map(key_code, fdf->map);
-	else if ((key_code >= 0 && key_code <= 2)
-		|| (key_code >= 12 && key_code <= 14))
-		rotate_map(key_code, fdf->map);
 	else if (key_code == 15)
 		reset_map(fdf->map);
 	print_image(fdf->map, fdf);

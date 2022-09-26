@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 17:39:14 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/24 19:34:32 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/26 20:29:26 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@ void	reset_map(t_map *map)
 {
 	map->x_move = 0;
 	map->y_move = 0;
-	map->alpha = 0;
-	map->beta = 0;
-	map->gamma = 0;
 }
 
 void	move_map(int key_code, t_map *map)

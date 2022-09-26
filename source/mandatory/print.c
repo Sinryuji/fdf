@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 18:23:03 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/26 14:06:43 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/26 15:21:18 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ t_point	get_point(t_map *map, int i, int j)
 
 	new.x = map->gap * i;
 	new.y = map->gap * j;
-	new.z = map->z_arr[j * map->height + i] * map->gap / 2;
-	new.color = map->color_arr[j * map->height + i];
+	new.z = map->z_arr[j * map->width + i] * map->gap / 2;
+	new.color = map->color_arr[j * map->width + i];
 	rotate_x(&new, map->alpha);
 	rotate_y(&new, map->beta);
 	rotate_z(&new, map->gamma);

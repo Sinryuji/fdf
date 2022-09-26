@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/23 20:43:43 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/26 13:36:38 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ static t_map	*init_map(void)
 	map->gap = 0;
 	map->x_move = 0;
 	map->y_move = 0;
+	map->alpha = 0;
+	map->beta = 0;
+	map->gamma = 0;
 	return (map);
 }
 

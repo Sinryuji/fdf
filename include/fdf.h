@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:32 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/23 20:43:59 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/24 19:34:28 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ typedef struct s_map
 	double	gap;
 	double	x_move;
 	double	y_move;
+	double	alpha;
+	double	gamma;
+	double	beta;
 }	t_map;
 
 typedef struct s_data
@@ -69,8 +72,9 @@ void	push(t_data **data, int z, int color);
 void	data_to_arr(t_map *map, t_data *data);
 
 /* projection.c */
-void	isometric(double *x, double *y, double z);
-void	map_move(int key_code, t_map *map);
+void	isometric(t_point *point);
+void	move_map(int key_code, t_map *map);
+void	reset_map(t_map *map);
 
 /* hook.c */
 int		key_hook(int key_code, t_fdf *fdf);
@@ -78,5 +82,11 @@ int		mouse_hook(int button, int x, int y, t_fdf *fdf);
 
 /* print.c */
 void	print_image(t_map *map, t_fdf *fdf);
+
+/* rotate.c */
+void	rotate_map(int key_code, t_map *map);
+void	rotate_x(t_point *point, double alpha);
+void	rotate_y(t_point *point, double betta);
+void	rotate_z(t_point *point, double gamma);
 
 #endif

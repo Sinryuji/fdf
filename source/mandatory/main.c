@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 20:24:19 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/22 18:24:34 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/24 19:43:09 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 	fdf = fdf_init();
 	fdf->map = read_map(fd);
 	print_image(fdf->map, fdf);
-	mlx_key_hook(fdf->win, key_hook, fdf);
+	mlx_hook(fdf->win, 2, 0, key_hook, fdf);
 	mlx_mouse_hook(fdf->win, mouse_hook, fdf);
 	mlx_loop(fdf->mlx);
 	return (0);

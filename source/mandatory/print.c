@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 18:23:03 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/25 20:07:41 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/26 14:06:43 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ void	dda(t_fdf *fdf, t_point p1, t_point p2)
 	else
 		step = fabs(dy);
 	i = 0;
-	pixel_set(fdf, p1.x, p1.y, 0x00FFFFFF);
+	pixel_set(fdf, p1.x, p1.y, p1.color);
 	while (i <= step)
 	{
 		p1.x += dx / step;
 		p1.y += dy / step;
-		pixel_set(fdf, p1.x, p1.y, 0x00FFFFFF);
+		pixel_set(fdf, p1.x, p1.y, p1.color);
 		i++;
 	}
 }
@@ -56,6 +56,7 @@ t_point	get_point(t_map *map, int i, int j)
 	new.x = map->gap * i;
 	new.y = map->gap * j;
 	new.z = map->z_arr[j * map->height + i] * map->gap / 2;
+	new.color = map->color_arr[j * map->height + i];
 	rotate_x(&new, map->alpha);
 	rotate_y(&new, map->beta);
 	rotate_z(&new, map->gamma);

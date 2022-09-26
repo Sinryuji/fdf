@@ -6,7 +6,7 @@
 /*   By: hyeongki <hyeongki@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 17:32:21 by hyeongki          #+#    #+#             */
-/*   Updated: 2022/09/26 13:36:38 by hyeongki         ###   ########.fr       */
+/*   Updated: 2022/09/26 14:07:50 by hyeongki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	get_map_data(t_map *map, t_data **data, char **split)
 		if (!data_str)
 			put_error(ERR_SPLIT);
 		if (!data_str[1])
-			push(data, ft_atoi(data_str[0]), 0);
+			push(data, ft_atoi(data_str[0]), 0x00FFFFFF);
 		else
 			push(data, ft_atoi(data_str[0]), ft_atoi_hex(data_str[1]));
 		ft_split_free(data_str);
